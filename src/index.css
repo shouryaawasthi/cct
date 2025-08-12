@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@plugin "daisyui";
+html {
+  scroll-behavior: smooth;
+}
+
+body{
+    height: 100%;
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fff;
+}
+
+.swiper-button-next, 
+.swiper-button-prev {
+  background-color: #f59e0b !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease;
+}
+
+/* Adjust icon size */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 16px !important;  /* Smaller arrow */
+  color: white !important;
+  font-weight: bold !important;
+}
