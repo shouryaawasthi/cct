@@ -1,5 +1,5 @@
 import autocad from '../assets/images/courses/autocad.webp'
-import staadPro from '../assets/images/courses/STAAD-PRO.webp'
+import staadPro from '../assets/images/courses/STAAD-Pro.webp'
 import etabs from '../assets/images/courses/etabs.webp'
 import revit_arch from '../assets/images/courses/revit_arch.webp'
 import revit_str from '../assets/images/courses/revit_str.webp'
