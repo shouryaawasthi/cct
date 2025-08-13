@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
-import MainLayout from '../components/mainLayout/mainLayout';
+import MainLayout from '../components/mainLayout/MainLayout';
 import CourseDetail from '../pages/courses/CourseDetail';
 import Services from '../pages/Services';
 import NotFound from '../components/NotFound';
