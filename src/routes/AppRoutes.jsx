@@ -21,6 +21,7 @@ export default function AppRoutes() {
           <Route path="services" element={<Services />} />
           <Route path="login/:userType" element={<LoginPage />} />
           <Route path="*" element={<NotFound />} />
+          
         </Route>
       </Routes>
     </>

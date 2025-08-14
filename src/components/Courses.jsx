@@ -87,7 +87,7 @@ const Courses = () => {
                     <LazyImage
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-48 object-cover rounded-t-xl"
+                      className="w-full h-48 object-fill rounded-t-xl"
                     />
 
                     <div

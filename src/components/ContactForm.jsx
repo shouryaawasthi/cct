@@ -7,12 +7,34 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
     const formData = new FormData(e.target);
+    const name = formData.get("name")?.trim();
+    const email = formData.get("email")?.trim();
+    const phone = formData.get("phone")?.trim();
+    const course = formData.get("course");
+
+ 
+    if (!/^[A-Za-z\s]{2,50}$/.test(name)) {
+      toast.error("Please enter a valid name (letters & spaces only).");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      toast.error("Please enter a valid 10-digit Indian phone number.");
+      return;
+    }
+    if (!course) {
+      toast.error("Please select a course.");
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
-      // Send form data to FormSubmit.co (email service)
       const formSubmitResponse = await fetch(
         "https://formsubmit.co/ajax/awasthishourya55@gmail.com",
         {
@@ -22,32 +44,17 @@ const ContactForm = () => {
         }
       );
 
-      const formSubmitResult = await formSubmitResponse.json();
-      console.log("FormSubmit response:", formSubmitResult);
+      const result = await formSubmitResponse.json();
 
-      // Prepare FormData for Zapier webhook (avoid setting Content-Type header)
-      const zapierFormData = new FormData();
-      zapierFormData.append("name", formData.get("name"));
-      zapierFormData.append("email", formData.get("email"));
-      zapierFormData.append("phone", formData.get("phone"));
-      zapierFormData.append("course", formData.get("course"));
-      zapierFormData.append("submittedAt", new Date().toLocaleString());
-
-      // Send form data to Zapier webhook as FormData (no content-type header)
-      await fetch("https://hooks.zapier.com/hooks/catch/23989846/uupyera/", {
-        method: "POST",
-        body: zapierFormData,
-      });
-
-      if (formSubmitResult.success === "true") {
-        toast.success("Thankyou for reaching us ! Our team will reach you sson");
+      if (result.success === true) {
+        toast.success("Thank you for reaching us! Our team will contact you soon.");
         e.target.reset();
       } else {
-        toast.error("Email sent failed. Please try again.");
+        toast.error("Email send failed. Please try again.");
       }
     } catch (error) {
       console.error("Submission error:", error);
-      toast.error("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Wait a bit.");
     } finally {
       setIsSubmitting(false);
     }
@@ -61,12 +68,8 @@ const ContactForm = () => {
       >
         <h2 className="text-2xl font-bold text-center">Get a Free Demo</h2>
 
-        {/* FormSubmit hidden inputs */}
-        <input
-          type="hidden"
-          name="_subject"
-          value="New Enquiry from Cad Craft Technology"
-        />
+        {/* Hidden inputs for FormSubmit */}
+        <input type="hidden" name="_subject" value="New Enquiry from Cad Craft Technology" />
         <input type="hidden" name="_template" value="box" />
         <input
           type="hidden"
@@ -75,16 +78,18 @@ const ContactForm = () => {
         />
         <input type="hidden" name="_captcha" value="false" />
 
-        {/* Name Field */}
+        {/* Name */}
         <input
           type="text"
           name="name"
           placeholder="Your Name"
+          pattern="[A-Za-z\s]{2,50}"
+          title="Name should only contain letters and spaces"
           className="w-full p-3 rounded-md bg-gray-50 text-black"
           required
         />
 
-        {/* Email Field */}
+        {/* Email */}
         <input
           type="email"
           name="email"
@@ -93,17 +98,18 @@ const ContactForm = () => {
           required
         />
 
-        {/* Phone Field */}
+        {/* Phone */}
         <input
           type="tel"
           name="phone"
           placeholder="Phone Number"
-          pattern="[0-9]{10}"
+          pattern="^[6-9]\d{9}$"
+          title="Enter a valid 10-digit Indian mobile number"
           className="w-full p-3 rounded-md bg-gray-50 text-black"
           required
         />
 
-        {/* Course Field */}
+        {/* Course */}
         <select
           name="course"
           className="w-full p-3 rounded-md text-black bg-gray-50"
@@ -112,16 +118,12 @@ const ContactForm = () => {
           <option value="">Select a Course</option>
           <option value="Mechanical Engineering">Mechanical Engineering</option>
           <option value="Civil Engineering">Civil Engineering</option>
-          <option value="Electrical Engineering">
-            Electrical Engineering
-          </option>
+          <option value="Electrical Engineering">Electrical Engineering</option>
           <option value="CS & IT">CS & IT</option>
-           <option value="Other Software">
-            Other Softwares
-          </option>
+          <option value="Other Software">Other Softwares</option>
         </select>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <button
           type="submit"
           disabled={isSubmitting}

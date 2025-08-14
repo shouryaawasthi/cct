@@ -105,7 +105,7 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <div data-aos="fade-up" className="max-w-7xl mt-5 mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-8">
+      <div data-aos="fade-up" className="max-w-7xl mt-5 mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-10">
         {statsData.map(({ Icon, number, label }, i) => (
           <div key={i} className="ms-4 flex items-center space-x-4 sm:flex-col sm:items-center sm:space-x-0 sm:space-y-2">
             <Icon className="w-8 h-8 sm:w-12 sm:h-12 text-amber-500" />
@@ -119,22 +119,26 @@ const Home = () => {
 
       {/* About & Contact */}
     
-      <div  className="flex flex-col md:flex-row items-center max-w-screen mx-auto">
-        <div data-aos="fade-up" className="hidden md:block flex-[2] text-gray-900 ">
-          <AboutUs
-            heading="About Us"
-            tagline="Committed to excellence in everything we do."
-            description={`Cad Craft Technologies, established in 2013, is a leading training and service provider dedicated to empowering students and professionals in the fields of Civil, Electrical, Mechanical, and Computer Science. With over a decade of experience, we specialize in delivering high-quality software training and a wide range of technical and digital services.
+      <div className="flex flex-col md:flex-row items-center max-w-screen-2xl mx-auto">
+  {/* About Us Section */}
+  <div data-aos="fade-up" className="flex-2 text-gray-900 hidden md:block">
+    <AboutUs
+      heading="About Us"
+      tagline="Committed to excellence in everything we do."
+      description={`Cad Craft Technologies, established in 2013, is a leading training and service provider dedicated to empowering students and professionals in the fields of Civil, Electrical, Mechanical, and Computer Science. With over a decade of experience, we specialize in delivering high-quality software training and a wide range of technical and digital services.
 
 Our training programs cover industry-relevant tools and technologies, ensuring our students gain hands-on experience in software applications used across engineering and IT sectors.
 
 At Cad Craft Technology, we blend technical expertise with a commitment to quality, helping individuals and businesses bring their ideas to life. Whether you're looking to upskill, start a project, or grow your online presence, we’re here to support your success.`}
-          />
-        </div>
-        <div data-aos="fade-up" className="md:flex-1 p-6">
-          <ContactForm />
-        </div>
-      </div>
+    />
+  </div>
+
+  {/* Contact Form Section */}
+  <div data-aos="fade-up" className="flex-1 p-6 w-full">
+    <ContactForm />
+  </div>
+</div>
+
   
 
       {/* Courses */}
