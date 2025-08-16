@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import ReactGA from "react-ga4";
+import { Analytics } from "@vercel/analytics/next"
 
 function App() {
    useEffect(() => {
@@ -31,6 +32,7 @@ function App() {
 }, []);
   return (
     <>
+    <Analytics />
     <div className='overflow-x-hidden'>
      <ToastContainer position="top-right" autoClose={2000} />
       <AppRoutes />
