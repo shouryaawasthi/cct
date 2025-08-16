@@ -6,8 +6,12 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import ReactGA from "react-ga4";
 
 function App() {
+   useEffect(() => {
+    ReactGA.initialize("G-3X2WBP633L");
+  }, []);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {

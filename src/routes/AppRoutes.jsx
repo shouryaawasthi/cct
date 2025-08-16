@@ -7,9 +7,11 @@ import CourseDetail from '../pages/courses/CourseDetail';
 import Services from '../pages/Services';
 import NotFound from '../components/NotFound';
 import LoginPage from '../pages/LoginPage';
+import usePageTracking from '../Hooks/usePageTracking';
 
 
 export default function AppRoutes() {
+    usePageTracking();
   return (
     <>
       <Routes>
