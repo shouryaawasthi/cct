@@ -6,10 +6,10 @@ export default function FranchiseInviteSection() {
     <section className="bg-blue-900 text-white py-16 px-6 md:px-12 text-center">
       <div className="max-w-4xl mx-auto space-y-6">
         <h2 className="text-3xl md:text-4xl font-bold">
-          Grow With Us — <span className="text-amber-500">Own a Cadcraft Franchise</span>
+          Grow With Us — <span className="text-amber-500">Own a Caddcraft Franchise</span>
         </h2>
         <p className="text-lg md:text-xl">
-          We're expanding! Partner with Cadcraft Technologies to open your own CAD training center backed by expert support and proven systems.
+          We're expanding! Partner with Caddcraft Technologies to open your own CAD training center backed by expert support and proven systems.
         </p>
         <div className="flex justify-center">
           <a
