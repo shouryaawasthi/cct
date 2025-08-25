@@ -32,7 +32,7 @@ function App() {
 }, []);
   return (
     <>
-    <Analytics />
+  
     <div className='overflow-x-hidden'>
      <ToastContainer position="top-right" autoClose={2000} />
       <AppRoutes />
