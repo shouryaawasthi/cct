@@ -6,11 +6,21 @@ import { Helmet } from 'react-helmet';
 const Contact = () => {
   return (
     <>
-     <Helmet>
-                <title>Contact | CaddCraft Technologies</title>
-                <meta name="description" content="CaddCraft the best company in Himachal Pradesh" />
-                <meta name="keywords" content="autocad , digital marketing , Web devlopment" />
-          </Helmet>
+      <Helmet>
+        <title>Contact | CaddCraft Technologies</title>
+        <meta
+          name="description"
+          content="Get in touch with CaddCraft Technologies, the leading training company in Himachal Pradesh for AutoCAD, Digital Marketing, Web Development, and more."
+        />
+        <meta
+          name="keywords"
+          content="contact CaddCraft, contact training institute Himachal, autocad contact, digital marketing contact, web development contact"
+        />
+        <link rel="canonical" href="https://caddctech.in/contact" />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
+
+
       {/* Gradient Hero Section */}
       <section className="w-full h-[400px]  flex flex-col items-center justify-center text-center px-4 bg-cover bg-center" style={{ backgroundImage: `url(${courseImage})` }}>
         <h2 className="text-4xl font-bold text-white mb-4">

@@ -6,19 +6,30 @@ import { Helmet } from "react-helmet-async";
 const About = () => {
   return (
     <>
-     <Helmet>
-            <title>About | CaddCraft Technologies</title>
-            <meta name="description" content="CaddCraft the best company in Himachal Pradesh" />
-            <meta name="keywords" content="autocad , digital marketing , Web devlopment" />
+      <Helmet>
+        <title>About Us | CaddCraft Technologies – Training & Placement in Himachal</title>
+        <meta
+          name="description"
+          content="Learn more about CaddCraft Technologies, the leading training institute in Himachal Pradesh for AutoCAD, Revit, Web Development, React, and Digital Marketing. Our mission is to make students job-ready."
+        />
+        <meta
+          name="keywords"
+          content="CaddCraft Technologies, About CaddCraft, Training Institute Himachal, AutoCAD institute, Web Development training, Digital Marketing Himachal"
+        />
+        <meta name="author" content="CaddCraft Technologies" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://caddctech.in/about" />
       </Helmet>
-    <section className="flex items-center  justify-center min-h-[400px] px-4 bg-cover bg-center" style={{ backgroundImage: `url(${courseImage})` }}>
-  <div className="text-center text-white max-w-3xl">
-    <h1 className="text-3xl md:text-5xl font-bold mb-4">
-      Welcome to Cad Craft Technologies
-    </h1>
-   
-  </div>
-</section>
+
+      <section className="flex items-center  justify-center min-h-[400px] px-4 bg-cover bg-center" style={{ backgroundImage: `url(${courseImage})` }}>
+        <div className="text-center text-white max-w-3xl">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">
+            About CaddCraft Technologies
+          </h1>
+
+
+        </div>
+      </section>
 
       <AboutUs
         heading="About Cadd Craft Technologies"

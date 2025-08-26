@@ -2,13 +2,12 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Quote } from "lucide-react";
-import himanshu from '../assets/images/testimonials/himanshu.webp'
-import saksham from '../assets/images/testimonials/saksham.webp'
-import nitin from '../assets/images/testimonials/nitin.webp'
-import saloni from '../assets/images/testimonials/saloni.webp'
-import shikha from '../assets/images/testimonials/shikha.webp'
-import anshika from '../assets/images/testimonials/anshika.webp'
-
+import himanshu from "../assets/images/testimonials/himanshu.webp";
+import saksham from "../assets/images/testimonials/saksham.webp";
+import nitin from "../assets/images/testimonials/nitin.webp";
+import saloni from "../assets/images/testimonials/saloni.webp";
+import shikha from "../assets/images/testimonials/shikha.webp";
+import anshika from "../assets/images/testimonials/anshika.webp";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -59,63 +58,66 @@ const testimonials = [
   },
 ];
 
-
 const TestimonialCard = ({ name, role, message, image }) => (
-  <div className="border-1 border-blue-900 rounded-xl p-6 h-full flex flex-col justify-between transition ">
-    <div className="flex items-start gap-6">
+  <div className="border border-blue-900 rounded-xl p-6 flex flex-col justify-between bg-white shadow-lg transition h-[280px] ">
+    {/* Top Section */}
+    <div className="flex items-start gap-4 mb-2 flex-grow">
       {/* Image */}
       <LazyImage
         src={image}
         alt={`Photo of ${name}`}
-        className="w-20 h-20 rounded-full object-fill border-4 border-white shadow ring-2 ring-blue-900 shrink-0"
+        className="w-16 h-20 rounded-full object-cover border-4 border-white shadow ring-2 ring-blue-900 shrink-0"
         loading="lazy"
-        onError={(e) => (e.target.src = "/fallback.jpg")}
       />
 
-      {/* Content */}
-      <div className="flex flex-col justify-between h-full">
+      {/* Quote + Message */}
+      <div className="flex flex-col">
         <Quote className="text-amber-500 w-5 h-5 mb-2" />
-        <p className="text-gray-700 text-sm italic mb-4 leading-relaxed">
+        <p className="text-gray-700 text-sm italic leading-relaxed">
           “{message}”
         </p>
-        <div>
-          <h4 className="font-semibold text-gray-900">{name}</h4>
-          <p className="text-sm text-gray-500">{role}</p>
-        </div>
       </div>
+    </div>
+
+    {/* Bottom Section */}
+    <div className="text-center">
+      <h4 className="font-semibold text-gray-900">{name}</h4>
+      <p className="text-sm text-gray-500">{role}</p>
     </div>
   </div>
 );
 
-
 const TestimonialSection = () => {
   return (
-    <section className="py-10 px-4">
-      {/* Section Heading */}
-      <div className="text-center mb-14">
-        <h2 className="text-4xl font-bold text-blue-900">Voices of Success</h2>
-        <p className="text-amber-500 text-sm mt-2">Hear from Our Community</p>
+    <section className="py-16 px-4 md:px-8 lg:px-12">
+      {/* Heading */}
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-blue-900">
+          Voices of Success
+        </h2>
+        <p className="text-amber-500 text-sm md:text-base mt-2">
+          Hear from Our Community
+        </p>
       </div>
 
-      {/* Slider Container */}
+      {/* Slider */}
       <div className="max-w-6xl mx-auto">
         <Swiper
           modules={[Autoplay, Pagination]}
           autoplay={{ delay: 5000 }}
           pagination={{ clickable: true }}
-          spaceBetween={30}
+          spaceBetween={24}
           slidesPerView={1}
           className="h-full"
           breakpoints={{
+            640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
           }}
         >
           {testimonials.map((testimonial, index) => (
-            <SwiperSlide key={index} className="h-full">
-              <div className="h-full">
-                <TestimonialCard {...testimonial} />
-              </div>
+            <SwiperSlide key={index} className="flex h-full">
+              <TestimonialCard {...testimonial} />
             </SwiperSlide>
           ))}
         </Swiper>

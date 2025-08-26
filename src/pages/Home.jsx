@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import {BookOpen, Users, CheckCircle, Laptop } from 'lucide-react';
+import { BookOpen, Users, CheckCircle, Laptop } from 'lucide-react';
 import {
   FaChalkboardTeacher,
   FaTools,
@@ -68,27 +68,36 @@ const Home = () => {
 
   return (
     <>
-    <Helmet>
-        <title>CaddCraft Technologies-Get a job ready training</title>
-        <meta name="description" content="CaddCraft the best company in Himachal Pradesh" />
-        <meta name="keywords" content="autocad , digital marketing , Web devlopment , react , revit" />
+      <Helmet>
+        <title>CaddCraft Technologies - Get Job Ready Training</title>
+        <meta
+          name="description"
+          content="CaddCraft Technologies offers the best job-ready training in Himachal Pradesh. Learn AutoCAD, Revit, Digital Marketing, Web Development, React, and more."
+        />
+        <meta
+          name="keywords"
+          content="AutoCAD training, Digital Marketing course, Web Development training, React course, Revit classes, Himachal Pradesh training institute"
+        />
+        <meta name="author" content="CaddCraft Technologies" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://caddctech.in/" />
       </Helmet>
       {/* Hero Section */}
-      
-      <section  className="px-6 md:py-10 bg-amber-100">
-      <div  className="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-0 md:gap-20">
+
+      <section className="px-6 md:py-10 bg-amber-100">
+        <div className="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-0 md:gap-20">
           <div data-aos="fade-up" className="w-full md:w-1/2 text-center md:text-left">
             <h1 className="text-4xl md:text-5xl font-bold text-blue-900 leading-tight">
               Launch Your Tech Career with Confidence
             </h1>
             <p className="mt-4 text-gray-600 text-lg">
-             Learn in-demand skills across Civil, Electrical, Mechanical, and IT fields — with programs built for real jobs and real growth.
+              Learn in-demand skills across Civil, Electrical, Mechanical, and IT fields — with programs built for real jobs and real growth.
             </p>
             <div className="mt-6 mb-5 flex justify-center md:justify-start gap-4">
               <a href="#courses" className="px-6 py-3 bg-amber-500 text-white rounded-md">
                 Explore Courses
               </a>
-             
+
             </div>
           </div>
 
@@ -118,62 +127,62 @@ const Home = () => {
       </div>
 
       {/* About & Contact */}
-    
+
       <div className="flex flex-col md:flex-row items-center max-w-screen-2xl mx-auto">
-  {/* About Us Section */}
-  <div data-aos="fade-up" className="flex-2 text-gray-900 hidden md:block">
-    <AboutUs
-      heading="About Us"
-      tagline="Committed to excellence in everything we do."
-      description={`Cad Craft Technologies, established in 2013, is a leading training and service provider dedicated to empowering students and professionals in the fields of Civil, Electrical, Mechanical, and Computer Science. With over a decade of experience, we specialize in delivering high-quality software training and a wide range of technical and digital services.
+        {/* About Us Section */}
+        <div data-aos="fade-up" className="flex-2 text-gray-900 hidden md:block">
+          <AboutUs
+            heading="About Us"
+            tagline="Committed to excellence in everything we do."
+            description={`Cad Craft Technologies, established in 2013, is a leading training and service provider dedicated to empowering students and professionals in the fields of Civil, Electrical, Mechanical, and Computer Science. With over a decade of experience, we specialize in delivering high-quality software training and a wide range of technical and digital services.
 
 Our training programs cover industry-relevant tools and technologies, ensuring our students gain hands-on experience in software applications used across engineering and IT sectors.
 
 At Cad Craft Technology, we blend technical expertise with a commitment to quality, helping individuals and businesses bring their ideas to life. Whether you're looking to upskill, start a project, or grow your online presence, we’re here to support your success.`}
-    />
-  </div>
+          />
+        </div>
 
-  {/* Contact Form Section */}
-  <div data-aos="fade-up" className="flex-1 p-6 w-full">
-    <ContactForm />
-  </div>
-</div>
+        {/* Contact Form Section */}
+        <div data-aos="fade-up" className="flex-1 p-6 w-full">
+          <ContactForm />
+        </div>
+      </div>
 
-  
+
 
       {/* Courses */}
       <div data-aos="fade-up" id="courses">
         <Courses />
       </div>
-      
+
 
       {/* Experience Stats */}
       <section data-aos="fade-up" className="w-full bg-white py-16 px-4 sm:px-6 lg:px-8">
-  <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
-    <div className="w-full md:w-2/2 ps-7">
-      <h2 className="text-3xl sm:text-4xl font-semibold text-gray-600 leading-tight mb-4">
-        <span className="text-8xl font-bold text-blue-900">14</span> Years of Trust & Excellence
-      </h2>
-      <p className="text-base sm:text-lg text-gray-600">
-        Delivering reliable, innovative, and client-focused solutions across diverse industries worldwide. Your success is our commitment.
-      </p>
-    </div>
-    <div className="w-full md:w-1/2 grid grid-cols-2 gap-6">
-      {counters.map((stat, idx) => (
-        <InView triggerOnce={true} key={idx}>
-          {({ inView, ref }) => (
-            <div ref={ref} className="flex flex-col items-center text-center">
-              <h3 className="text-4xl font-bold text-amber-500">
-                {inView ? <CountUp end={stat.value} duration={2} /> : '0'}+
-              </h3>
-              <p className="mt-2 text-sm sm:text-base text-gray-700 font-medium">{stat.label}</p>
-            </div>
-          )}
-        </InView>
-      ))}
-    </div>
-  </div>
-</section>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
+          <div className="w-full md:w-2/2 ps-7">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-gray-600 leading-tight mb-4">
+              <span className="text-8xl font-bold text-blue-900">14</span> Years of Trust & Excellence
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600">
+              Delivering reliable, innovative, and client-focused solutions across diverse industries worldwide. Your success is our commitment.
+            </p>
+          </div>
+          <div className="w-full md:w-1/2 grid grid-cols-2 gap-6">
+            {counters.map((stat, idx) => (
+              <InView triggerOnce={true} key={idx}>
+                {({ inView, ref }) => (
+                  <div ref={ref} className="flex flex-col items-center text-center">
+                    <h3 className="text-4xl font-bold text-amber-500">
+                      {inView ? <CountUp end={stat.value} duration={2} /> : '0'}+
+                    </h3>
+                    <p className="mt-2 text-sm sm:text-base text-gray-700 font-medium">{stat.label}</p>
+                  </div>
+                )}
+              </InView>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Why Us */}
       <section data-aos="fade-up" className="py-20 bg-gray-50">
@@ -199,16 +208,16 @@ At Cad Craft Technology, we blend technical expertise with a commitment to quali
       </section>
       {/* franchise training */}
       <div data-aos="fade-up">
-      <FranchiseInviteSection />
+        <FranchiseInviteSection />
       </div>
-       {/* Testimonials */}
-    <div data-aos="fade-up"> 
-      <TestimonialSection />
+      {/* Testimonials */}
+      <div data-aos="fade-up">
+        <TestimonialSection />
       </div>
 
       {/* FAQ */}
       <div data-aos="fade-up">
-      <Faq />
+        <Faq />
       </div>
     </>
   );

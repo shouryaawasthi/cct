@@ -14,7 +14,7 @@ const ContactForm = () => {
     const phone = formData.get("phone")?.trim();
     const course = formData.get("course");
 
- 
+  
     if (!/^[A-Za-z\s]{2,50}$/.test(name)) {
       toast.error("Please enter a valid name (letters & spaces only).");
       return;
@@ -45,8 +45,10 @@ const ContactForm = () => {
       );
 
       const result = await formSubmitResponse.json();
+      console.log("FormSubmit Response:", result); // 👀 Debugging
 
-      if (result.success === true) {
+    
+      if (result.success === true || result.success === "true") {
         toast.success("Thank you for reaching us! Our team will contact you soon.");
         e.target.reset();
       } else {
@@ -54,7 +56,7 @@ const ContactForm = () => {
       }
     } catch (error) {
       console.error("Submission error:", error);
-      toast.error("Something went wrong. Wait a bit.");
+      toast.error("Something went wrong. Please wait a bit and retry.");
     } finally {
       setIsSubmitting(false);
     }
@@ -69,12 +71,12 @@ const ContactForm = () => {
         <h2 className="text-2xl font-bold text-center">Get a Free Demo</h2>
 
         {/* Hidden inputs for FormSubmit */}
-        <input type="hidden" name="_subject" value="New Enquiry from Cad Craft Technology" />
+        <input type="hidden" name="_subject" value="New Enquiry from CaddCraft Technologies" />
         <input type="hidden" name="_template" value="box" />
         <input
           type="hidden"
           name="_autoresponse"
-          value="Thanks for contacting Cad Craft. We will reach out shortly!"
+          value="Thanks for contacting CaddCraft. We will reach out shortly!"
         />
         <input type="hidden" name="_captcha" value="false" />
 
