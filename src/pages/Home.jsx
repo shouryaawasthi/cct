@@ -114,7 +114,7 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <div data-aos="fade-up" className="max-w-7xl mt-5 mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-10">
+      <div className="max-w-7xl mt-5 mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-10">
         {statsData.map(({ Icon, number, label }, i) => (
           <div key={i} className="ms-4 flex items-center space-x-4 sm:flex-col sm:items-center sm:space-x-0 sm:space-y-2">
             <Icon className="w-8 h-8 sm:w-12 sm:h-12 text-amber-500" />

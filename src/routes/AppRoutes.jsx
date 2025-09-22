@@ -8,8 +8,7 @@ import Services from '../pages/Services';
 import NotFound from '../components/NotFound';
 import LoginPage from '../pages/LoginPage';
 import usePageTracking from '../Hooks/usePageTracking';
-
-
+import AdminRoutes from '../admin/routues/AdminRoutes';
 export default function AppRoutes() {
     usePageTracking();
   return (
@@ -23,8 +22,11 @@ export default function AppRoutes() {
           <Route path="services" element={<Services />} />
           <Route path="login/:userType" element={<LoginPage />} />
           <Route path="*" element={<NotFound />} />
+          </Route>
+          {/* Admin routes */}
+          <Route path="/admin-login/*" element={<AdminRoutes/>} />
           
-        </Route>
+        
       </Routes>
     </>
   );
