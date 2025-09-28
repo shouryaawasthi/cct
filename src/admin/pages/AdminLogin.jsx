@@ -16,7 +16,7 @@ function AdminLogin() {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:5000/api/admin/login', formData);
+      const res = await axios.post('https://host-rsg5.onrender.com/api/admin/login', formData);
       const token = res.data.token;
       localStorage.setItem('adminToken', token);
       navigate('/admin-login/dashboard');
@@ -26,8 +26,8 @@ function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-900 px-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+    <div className="min-h-screen flex items-center justify-center px-4 ">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 ">
         <img src={logo} alt="cadd logo"  className='h-30 w-30 m-auto'/>
 
         <form onSubmit={handleSubmit} className="space-y-4">
