@@ -282,7 +282,7 @@ export default function StudentForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/students", formData);
+      await axios.post("https://caddbackend-hpn1.vercel.app/api/students", formData);
       toast.success("Student added successfully!");
       setFormData({
         name: "",
