@@ -1,4 +1,5 @@
 import React from 'react'
+import StudentTable from './StudentTable'
 
 const StatCard = ({title,value,icon}) => {
   return (
@@ -12,6 +13,7 @@ const StatCard = ({title,value,icon}) => {
             <p>{title}</p>
         </div>
     </div>
+    <StudentTable />
     </div>
   )
 }
