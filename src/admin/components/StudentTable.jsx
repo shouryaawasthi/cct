@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-const StudentList = () => {
+const StudentTable= () => {
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -122,4 +122,4 @@ const StudentList = () => {
   );
 };
 
-export default StudentList;
+export default StudentTable;

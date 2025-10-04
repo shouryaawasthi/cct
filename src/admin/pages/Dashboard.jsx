@@ -1,6 +1,7 @@
 import React from 'react';
 import StatCard from '../components/StatCard';
 import { FaUserGraduate, FaMoneyBillWave, FaCheckCircle } from 'react-icons/fa';
+import StudentTable from '../components/StudentTable';
 
 
 
@@ -41,7 +42,7 @@ const Dashboard = () => {
   
     </div>
     
-   
+   <StudentTable />
     </>
   );
 };
