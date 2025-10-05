@@ -13,7 +13,7 @@ const StatCard = ({title,value,icon}) => {
             <p>{title}</p>
         </div>
     </div>
-    <StudentTable />
+
     </div>
   )
 }
