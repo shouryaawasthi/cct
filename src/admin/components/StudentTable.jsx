@@ -1,12 +1,13 @@
-// src/components/StudentList.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-const StudentTable= () => {
+const StudentTable = () => {
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const studentsPerPage = 5; // ✅ change this to 10, 20, etc.
 
   const API_URL = "https://caddbackend-hpn1.vercel.app";
 
@@ -15,9 +16,10 @@ const StudentTable= () => {
     const fetchStudents = async () => {
       try {
         const res = await axios.get(`${API_URL}/api/students`);
-        setStudents(res.data);
+        setStudents(res.data.data); // ✅ correct array
       } catch (err) {
         console.error("Error fetching students:", err);
+        setStudents([]); // fallback
       } finally {
         setLoading(false);
       }
@@ -33,6 +35,12 @@ const StudentTable= () => {
       .includes(search.toLowerCase())
   );
 
+  // Pagination logic
+  const indexOfLast = currentPage * studentsPerPage;
+  const indexOfFirst = indexOfLast - studentsPerPage;
+  const currentStudents = filteredStudents.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
+
   // Handlers
   const handleEdit = (student) => {
     console.log("Edit:", student);
@@ -44,7 +52,7 @@ const StudentTable= () => {
 
     try {
       await axios.delete(`${API_URL}/api/students/${id}`);
-      setStudents((prev) => prev.filter((s) => s.id !== id));
+      setStudents((prev) => prev.filter((s) => s._id !== id)); // ✅ filter with _id
     } catch (err) {
       console.error("Error deleting student:", err);
     }
@@ -61,7 +69,10 @@ const StudentTable= () => {
         type="text"
         placeholder="Search by any field..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setCurrentPage(1); // ✅ reset to page 1 on search
+        }}
         className="mb-4 p-2 border rounded w-full max-w-md"
       />
 
@@ -73,29 +84,37 @@ const StudentTable= () => {
               <th className="px-4 py-2">#</th>
               <th className="px-4 py-2">Student ID</th>
               <th className="px-4 py-2">Name</th>
+              <th className="px-4 py-2">Father's Name</th>
               <th className="px-4 py-2">Email</th>
+              <th className="px-4 py-2">Mobile</th>
               <th className="px-4 py-2">Course</th>
+              <th className="px-4 py-2">Fee (Received/Total)</th>
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredStudents.length === 0 ? (
+            {currentStudents.length === 0 ? (
               <tr>
-                <td colSpan="6" className="text-center px-4 py-6">
+                <td colSpan="9" className="text-center px-4 py-6">
                   No students found.
                 </td>
               </tr>
             ) : (
-              filteredStudents.map((student, index) => (
+              currentStudents.map((student, index) => (
                 <tr
-                  key={student.id}
+                  key={student._id}
                   className="border-b hover:bg-gray-50 transition"
                 >
-                  <td className="px-4 py-2">{index + 1}</td>
-                  <td className="px-4 py-2">{student.id}</td>
+                  <td className="px-4 py-2">{indexOfFirst + index + 1}</td>
+                  <td className="px-4 py-2">{student._id}</td>
                   <td className="px-4 py-2">{student.name}</td>
+                  <td className="px-4 py-2">{student.fatherName}</td>
                   <td className="px-4 py-2">{student.email}</td>
+                  <td className="px-4 py-2">{student.mobile}</td>
                   <td className="px-4 py-2">{student.course}</td>
+                  <td className="px-4 py-2">
+                    {student.feeReceived} / {student.totalFee}
+                  </td>
                   <td className="px-4 py-2 space-x-2">
                     <button
                       onClick={() => handleEdit(student)}
@@ -105,7 +124,7 @@ const StudentTable= () => {
                       <FaEdit />
                     </button>
                     <button
-                      onClick={() => handleDelete(student.id)}
+                      onClick={() => handleDelete(student._id)}
                       className="text-red-600 hover:text-red-800"
                       title="Delete"
                     >
@@ -117,6 +136,35 @@ const StudentTable= () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center space-x-2 mt-4">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+          className="px-3 py-1 border rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+        {[...Array(totalPages)].map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1 ? "bg-blue-900 text-white" : ""
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+          className="px-3 py-1 border rounded disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
