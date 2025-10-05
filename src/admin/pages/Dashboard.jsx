@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   return (
     <>
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-300 bg-gray-100 p-8">
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.map((stat, index) => (
