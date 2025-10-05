@@ -1,5 +1,4 @@
 import React from 'react'
-import StudentTable from './StudentTable'
 
 const StatCard = ({title,value,icon}) => {
   return (

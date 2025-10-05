@@ -52,7 +52,7 @@ const StudentTable = () => {
 
     try {
       await axios.delete(`${API_URL}/api/students/${id}`);
-      setStudents((prev) => prev.filter((s) => s._id !== id)); // ✅ filter with _id
+      setStudents((prev) => prev.filter((s) => s._id !== id));
     } catch (err) {
       console.error("Error deleting student:", err);
     }
