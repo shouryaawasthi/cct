@@ -16,7 +16,7 @@ function AdminLogin() {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:3000/api/admin/login', formData);
+      const res = await axios.post('https://caddbackend-hpn1.vercel.app/api/admin/login', formData);
       const token = res.data.token;
       localStorage.setItem('adminToken', token);
       navigate('/admin-login/dashboard');

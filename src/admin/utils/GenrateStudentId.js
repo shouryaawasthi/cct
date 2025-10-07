@@ -3,7 +3,7 @@ export const generateStudentId = (existingStudents = []) => {
   const year = new Date().getFullYear();
   const prefix = `${year}/55`;
 
-  // Filter students by current year
+ 
   const studentsThisYear = existingStudents.filter((s) =>
     s.id.startsWith(prefix)
   );
