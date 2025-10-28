@@ -42,13 +42,8 @@ export default function StudentForm() {
 
   //  Generate new UUID after fetching existing students
   useEffect(() => {
-   const newId = generateStudentId([...existingStudents, formData]);
-setFormData({
-  ...initialFormState,
-  UUID: newId,
-});
-setExistingStudents((prev) => [...prev, { UUID: newId }]);
-
+    const newId = generateStudentId(existingStudents || []);
+    setFormData((prev) => ({ ...prev, UUID: newId }));
   }, [existingStudents]);
 
   // Input change handler
