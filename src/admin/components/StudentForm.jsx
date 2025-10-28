@@ -34,7 +34,7 @@ export default function StudentForm() {
   // useEffect(() => {
   //   axios
   //     .get(`${API_URL}/api/students`)
-  //     .then((res) => {
+  //     .then((res) => { 
   //       setExistingStudents(res.data);
   //     })
   //     .catch(() => toast.error("Failed to load existing students"));
@@ -42,8 +42,13 @@ export default function StudentForm() {
 
   //  Generate new UUID after fetching existing students
   useEffect(() => {
-    const newId = generateStudentId(existingStudents || []);
-    setFormData((prev) => ({ ...prev, UUID: newId }));
+   const newId = generateStudentId([...existingStudents, formData]);
+setFormData({
+  ...initialFormState,
+  UUID: newId,
+});
+setExistingStudents((prev) => [...prev, { UUID: newId }]);
+
   }, [existingStudents]);
 
   // Input change handler

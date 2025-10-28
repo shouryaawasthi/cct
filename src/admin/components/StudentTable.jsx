@@ -7,7 +7,7 @@ const StudentTable = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const studentsPerPage = 5; // ✅ change this to 10, 20, etc.
+  const studentsPerPage = 5; 
 
   const API_URL = "https://caddbackend-hpn1.vercel.app";
 
@@ -16,7 +16,7 @@ const StudentTable = () => {
     const fetchStudents = async () => {
       try {
         const res = await axios.get(`${API_URL}/api/students`);
-        setStudents(res.data.data); // ✅ correct array
+        setStudents(res.data.data); 
       } catch (err) {
         console.error("Error fetching students:", err);
         setStudents([]); // fallback
