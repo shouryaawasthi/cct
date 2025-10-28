@@ -1,7 +1,7 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { generateStudentId } from "../utils/GenrateStudentId"; // check correct spelling/path
 
 const courseSoftwareLimit = {
   "Certificate Course": 1,
@@ -23,10 +23,30 @@ export default function StudentForm() {
     softwares: [""],
     totalFee: "",
     feeReceived: "",
+    UUID: "",
   });
 
   const [loading, setLoading] = useState(false);
+  const [existingStudents, setExistingStudents] = useState([]);
+  const API_URL = "https://caddbackend-hpn1.vercel.app";
 
+  // Fetch all existing students once
+  // useEffect(() => {
+  //   axios
+  //     .get(`${API_URL}/api/students`)
+  //     .then((res) => {
+  //       setExistingStudents(res.data);
+  //     })
+  //     .catch(() => toast.error("Failed to load existing students"));
+  // }, []);
+
+  //  Generate new UUID after fetching existing students
+  useEffect(() => {
+    const newId = generateStudentId(existingStudents || []);
+    setFormData((prev) => ({ ...prev, UUID: newId }));
+  }, [existingStudents]);
+
+  // Input change handler
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
@@ -35,6 +55,7 @@ export default function StudentForm() {
     }));
   };
 
+  //  Course selection logic
   const handleCourseChange = (e) => {
     const course = e.target.value;
     const limit = courseSoftwareLimit[course];
@@ -45,6 +66,7 @@ export default function StudentForm() {
     }));
   };
 
+  // Update software fields
   const updateSoftware = (index, value) => {
     setFormData((prev) => {
       const updated = [...prev.softwares];
@@ -53,6 +75,7 @@ export default function StudentForm() {
     });
   };
 
+  //  Add/remove software fields (for CS/IT Course)
   const addSoftwareField = () =>
     setFormData((prev) => ({ ...prev, softwares: [...prev.softwares, ""] }));
 
@@ -62,12 +85,16 @@ export default function StudentForm() {
       softwares: prev.softwares.filter((_, i) => i !== index),
     }));
 
+  //  Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("https://caddbackend-hpn1.vercel.app/api/students", formData);
+      await axios.post(`${API_URL}/api/students`, formData);
       toast.success("Student added successfully!");
+
+      // Reset form after submission
+      const newId = generateStudentId([...existingStudents, formData]);
       setFormData({
         name: "",
         fatherName: "",
@@ -79,6 +106,7 @@ export default function StudentForm() {
         softwares: [""],
         totalFee: "",
         feeReceived: "",
+        UUID: newId, // generate next one
       });
     } catch (err) {
       toast.error(err.response?.data?.message || "Error saving student");
@@ -88,14 +116,27 @@ export default function StudentForm() {
   };
 
   return (
-    <div className="p-4 sm:p-8 max-w-3xl mx-auto">
+    <div className="p-2 sm:p-2 max-w-8xl mx-auto">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-2xl p-6 sm:p-10 space-y-6"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800">
-          Student Admission Form
-        </h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">New Registration</h2>
+          <input type="date" className="border rounded-lg p-2" required />
+        </div>
+
+        {/* UUID */}
+        <div>
+          <label className="block mb-1 text-gray-700">UUID</label>
+          <input
+            type="text"
+            name="UUID"
+            value={formData.UUID}
+            className="w-full border p-2 rounded-lg focus:ring focus:ring-blue-300 bg-gray-100"
+            readOnly
+          />
+        </div>
 
         {/* Basic Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -109,6 +150,7 @@ export default function StudentForm() {
               required
             />
           </div>
+
           <div>
             <label className="block mb-1 text-gray-700">Father's Name</label>
             <input
@@ -118,6 +160,7 @@ export default function StudentForm() {
               className="w-full border p-2 rounded-lg focus:ring focus:ring-blue-300"
             />
           </div>
+
           <div>
             <label className="block mb-1 text-gray-700">Email</label>
             <input
@@ -128,6 +171,7 @@ export default function StudentForm() {
               className="w-full border p-2 rounded-lg focus:ring focus:ring-blue-300"
             />
           </div>
+
           <div>
             <label className="block mb-1 text-gray-700">Mobile</label>
             <input
@@ -138,6 +182,7 @@ export default function StudentForm() {
               required
             />
           </div>
+
           <div className="md:col-span-2">
             <label className="block mb-1 text-gray-700">Address</label>
             <input

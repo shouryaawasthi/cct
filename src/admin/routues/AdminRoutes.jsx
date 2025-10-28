@@ -20,6 +20,7 @@ export default function AdminRoutes() {
           element={
             <PrivateRoute>
               <Dashboard />
+              
             </PrivateRoute>
           }
         />
