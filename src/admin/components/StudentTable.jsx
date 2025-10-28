@@ -106,7 +106,7 @@ const StudentTable = () => {
                   className="border-b hover:bg-gray-50 transition"
                 >
                   <td className="px-4 py-2">{indexOfFirst + index + 1}</td>
-                  <td className="px-4 py-2">{student._id}</td>
+                  <td className="px-4 py-2">{student.UUID}</td>
                   <td className="px-4 py-2">{student.name}</td>
                   <td className="px-4 py-2">{student.fatherName}</td>
                   <td className="px-4 py-2">{student.email}</td>
