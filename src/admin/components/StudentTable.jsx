@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaTrash, FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
@@ -9,26 +9,27 @@ const StudentTable = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedStudent, setSelectedStudent] = useState(null); // for modal
-  const [editData, setEditData] = useState({}); // editable fields
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [editData, setEditData] = useState({});
   const studentsPerPage = 5;
 
   const API_URL = "https://caddbackend-hpn1.vercel.app";
 
   // Fetch students
+  const fetchStudents = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/students`);
+      setStudents(res.data.data);
+    } catch (err) {
+      console.error("Error fetching students:", err);
+      toast.error("Failed to load students");
+      setStudents([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const res = await axios.get(`${API_URL}/api/students`);
-        setStudents(res.data.data);
-      } catch (err) {
-        console.error("Error fetching students:", err);
-        toast.error("Failed to load students");
-        setStudents([]);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchStudents();
   }, []);
 
@@ -40,7 +41,7 @@ const StudentTable = () => {
       .includes(search.toLowerCase())
   );
 
-  // Pagination logic
+  // Pagination
   const indexOfLast = currentPage * studentsPerPage;
   const indexOfFirst = indexOfLast - studentsPerPage;
   const currentStudents = filteredStudents.slice(indexOfFirst, indexOfLast);
@@ -52,13 +53,13 @@ const StudentTable = () => {
     setEditData(student);
   };
 
-  // Handle edit input inside modal
+  // Handle edit input
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Save updated data to DB
+  // Save updated data
   const handleSave = async () => {
     try {
       const res = await axios.put(
@@ -66,12 +67,11 @@ const StudentTable = () => {
         editData
       );
       toast.success("Student updated successfully!");
-
-      // Update table view instantly
       setStudents((prev) =>
-        prev.map((s) => (s._id === selectedStudent._id ? res.data : s))
+        prev.map((s) =>
+          s._id === selectedStudent._id ? res.data.data || editData : s
+        )
       );
-
       setSelectedStudent(null);
     } catch (err) {
       console.error("Error updating student:", err);
@@ -79,11 +79,24 @@ const StudentTable = () => {
     }
   };
 
+  // Delete student
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this student?")) return;
+    try {
+      await axios.delete(`${API_URL}/api/students/${id}`);
+      toast.success("Student deleted successfully!");
+      setStudents((prev) => prev.filter((s) => s._id !== id));
+    } catch (err) {
+      console.error("Error deleting student:", err);
+      toast.error("Failed to delete student");
+    }
+  };
+
   if (loading) return <p className="text-center p-4">Loading students...</p>;
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Student List</h1>
+      <h1 className="text-xl font-bold mb-4">Student Management</h1>
 
       {/* Search */}
       <input
@@ -103,43 +116,45 @@ const StudentTable = () => {
           <thead className="bg-blue-900 text-white">
             <tr>
               <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2">Student ID</th>
+              <th className="px-4 py-2">UUID</th>
               <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Father's Name</th>
               <th className="px-4 py-2">Course</th>
-              <th className="px-4 py-2">Fee (Received/Total)</th>
-              <th className="px-4 py-2 text-center">View</th>
+              <th className="px-4 py-2">Fee (Rec/Total)</th>
+              <th className="px-4 py-2 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
             {currentStudents.length === 0 ? (
               <tr>
-                <td colSpan="7" className="text-center px-4 py-6">
+                <td colSpan="6" className="text-center py-6">
                   No students found.
                 </td>
               </tr>
             ) : (
               currentStudents.map((student, index) => (
-                <tr
-                  key={student._id}
-                  className="border-b hover:bg-gray-50 transition"
-                >
+                <tr key={student._id} className="border-b hover:bg-gray-50">
                   <td className="px-4 py-2">{indexOfFirst + index + 1}</td>
                   <td className="px-4 py-2">{student.UUID}</td>
                   <td className="px-4 py-2">{student.name}</td>
-                  <td className="px-4 py-2">{student.fatherName}</td>
                   <td className="px-4 py-2">{student.course}</td>
                   <td className="px-4 py-2">
                     {student.feeReceived} / {student.totalFee}
                   </td>
-                  <td className="px-4 py-2 text-center">
-                    <Link
-                      to={`/student/${student._id}`}
+                  <td className="px-4 py-2 flex justify-center gap-4">
+                    <button
+                      onClick={() => handleView(student)}
                       className="text-blue-600 hover:text-blue-800"
-                      title="View Details"
+                      title="View/Edit"
                     >
                       <FaEye />
-                    </Link>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(student._id)}
+                      className="text-red-600 hover:text-red-800"
+                      title="Delete"
+                    >
+                      <FaTrash />
+                    </button>
                   </td>
                 </tr>
               ))
@@ -149,27 +164,28 @@ const StudentTable = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center space-x-2 mt-4">
+      <div className="flex justify-center items-center gap-2 mt-4">
         <button
           disabled={currentPage === 1}
-          onClick={() => setCurrentPage((prev) => prev - 1)}
+          onClick={() => setCurrentPage((p) => p - 1)}
           className="px-3 py-1 border rounded disabled:opacity-50"
         >
-          Previous
+          Prev
         </button>
         {[...Array(totalPages)].map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrentPage(i + 1)}
-            className={`px-3 py-1 border rounded ${currentPage === i + 1 ? "bg-blue-900 text-white" : ""
-              }`}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1 ? "bg-blue-900 text-white" : ""
+            }`}
           >
             {i + 1}
           </button>
         ))}
         <button
           disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((prev) => prev + 1)}
+          onClick={() => setCurrentPage((p) => p + 1)}
           className="px-3 py-1 border rounded disabled:opacity-50"
         >
           Next
@@ -179,9 +195,9 @@ const StudentTable = () => {
       {/* View/Edit Modal */}
       {selectedStudent && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-2xl relative shadow-lg overflow-y-auto max-h-[90vh]">
+          <div className="bg-white p-6 rounded-lg w-full max-w-3xl relative shadow-lg overflow-y-auto max-h-[90vh]">
             <h2 className="text-xl font-bold mb-4 text-blue-700">
-              Student Details
+              Student Full Details
             </h2>
 
             <button
@@ -194,10 +210,37 @@ const StudentTable = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {Object.keys(editData).map((key) => {
                 if (
-                  ["_id", "__v", "createdAt", "updatedAt"].includes(key) ||
-                  typeof editData[key] === "object"
+                  ["_id", "__v", "createdAt", "updatedAt"].includes(key)
                 )
                   return null;
+
+                // Display arrays (like softwares)
+                if (Array.isArray(editData[key])) {
+                  return (
+                    <div key={key} className="sm:col-span-2">
+                      <label className="block text-sm text-gray-600 capitalize mb-1">
+                        {key}
+                      </label>
+                      {editData[key].map((val, idx) => (
+                        <input
+                          key={idx}
+                          name={`${key}[${idx}]`}
+                          value={val || ""}
+                          onChange={(e) => {
+                            const newArr = [...editData[key]];
+                            newArr[idx] = e.target.value;
+                            setEditData((prev) => ({
+                              ...prev,
+                              [key]: newArr,
+                            }));
+                          }}
+                          className="border p-2 rounded w-full mb-2"
+                        />
+                      ))}
+                    </div>
+                  );
+                }
+
                 return (
                   <div key={key}>
                     <label className="block text-sm text-gray-600 capitalize mb-1">
@@ -207,7 +250,7 @@ const StudentTable = () => {
                       name={key}
                       value={editData[key] || ""}
                       onChange={handleEditChange}
-                      className="border p-2 rounded w-full focus:ring focus:ring-blue-300"
+                      className="border p-2 rounded w-full"
                     />
                   </div>
                 );
