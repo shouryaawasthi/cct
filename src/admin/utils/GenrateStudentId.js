@@ -1,13 +1,25 @@
-
 export const generateStudentId = (students) => {
-  if (!students || students.length === 0) return `55/1/${new Date().getFullYear()}`;
-  
+  const year = new Date().getFullYear(); // e.g. 2025
+
+  // If no students yet, start from 01
+  if (!students || students.length === 0) {
+    return `${year}/55/01`;
+  }
+
+  // Get the last student's UUID
   const lastStudent = students[students.length - 1];
   const lastId = lastStudent.UUID;
-  const match = lastId.match(/55\/(\d+)\/(\d{4})/);
 
-  if (!match) return `55/1/${new Date().getFullYear()}`;
+  // Match pattern like 2025/55/01
+  const match = lastId.match(/(\d{4})\/55\/(\d+)/);
 
-  const nextNumber = parseInt(match[1]) + 1;
-  return `55/${nextNumber}/${new Date().getFullYear()}`;
+  // If pattern doesn't match, start fresh
+  if (!match) {
+    return `${year}/55/01`;
+  }
+
+  const lastNumber = parseInt(match[2]);
+  const nextNumber = (lastNumber + 1).toString().padStart(2, "0"); // ensures 01, 02, 03...
+  
+  return `${year}/55/${nextNumber}`;
 };

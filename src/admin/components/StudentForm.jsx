@@ -24,13 +24,14 @@ export default function StudentForm() {
     totalFee: "",
     feeReceived: "",
     UUID: "",
+    joinDate: new Date().toISOString().split("T")[0],
   });
 
   const [loading, setLoading] = useState(false);
   const [existingStudents, setExistingStudents] = useState([]);
   const API_URL = "https://caddbackend-hpn1.vercel.app";
 
-  // ✅ Fetch existing students on mount
+ 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -43,7 +44,7 @@ export default function StudentForm() {
     fetchStudents();
   }, []);
 
-  // ✅ Generate next UUID when students are fetched
+ 
   useEffect(() => {
     if (existingStudents.length >= 0) {
       const newId = generateStudentId(existingStudents || []);
@@ -51,7 +52,7 @@ export default function StudentForm() {
     }
   }, [existingStudents]);
 
-  // Input change handler
+  // Input handler
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
@@ -71,7 +72,7 @@ export default function StudentForm() {
     }));
   };
 
-  // Update software field
+  // Update software
   const updateSoftware = (index, value) => {
     setFormData((prev) => {
       const updated = [...prev.softwares];
@@ -80,7 +81,7 @@ export default function StudentForm() {
     });
   };
 
-  // Add/remove software for CS/IT Course
+  // Add/remove software for CS/IT
   const addSoftwareField = () =>
     setFormData((prev) => ({ ...prev, softwares: [...prev.softwares, ""] }));
 
@@ -90,22 +91,29 @@ export default function StudentForm() {
       softwares: prev.softwares.filter((_, i) => i !== index),
     }));
 
-  // ✅ Submit form
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      await axios.post(`${API_URL}/api/students`, formData);
+      // ensure joinDate and UUID are included
+      const studentData = {
+        ...formData,
+        joinDate: new Date().toISOString().split("T")[0],
+      };
+
+      await axios.post(`${API_URL}/api/students`, studentData);
       toast.success("Student added successfully!");
 
-      // Update local list for next UUID
-      const updatedStudents = [...existingStudents, formData];
+      // update local list
+      const updatedStudents = [...existingStudents, studentData];
       setExistingStudents(updatedStudents);
 
-      // Generate new UUID after adding student
+      // generate new UUID
       const newId = generateStudentId(updatedStudents);
 
-      // Reset form
+      // reset form
       setFormData({
         name: "",
         fatherName: "",
@@ -118,8 +126,10 @@ export default function StudentForm() {
         totalFee: "",
         feeReceived: "",
         UUID: newId,
+        joinDate: new Date().toISOString().split("T")[0], // reset to current date
       });
     } catch (err) {
+      console.error(err);
       toast.error(err.response?.data?.message || "Error saving student");
     } finally {
       setLoading(false);
@@ -132,9 +142,15 @@ export default function StudentForm() {
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-2xl p-6 sm:p-10 space-y-6"
       >
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-800">New Registration</h2>
-          <input type="date" className="border rounded-lg p-2" required />
+          <input
+            type="text"
+            value={formData.joinDate}
+            readOnly
+            className="border rounded-lg p-2 bg-gray-100 text-gray-600"
+          />
         </div>
 
         {/* UUID */}
