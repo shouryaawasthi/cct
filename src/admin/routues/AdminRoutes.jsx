@@ -32,6 +32,7 @@ export default function AdminRoutes() {
             </PrivateRoute>
           }
         />
+          <Route path="/student/:id" element={<PrivateRoute><StudentDetails /></PrivateRoute>} />
       </Route>
     </Routes>
   );
