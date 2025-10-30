@@ -5,6 +5,7 @@ import Dashboard from "../pages/Dashboard";
 import AdminLayout from "../layout/AdminLayout";
 import PrivateRoute from "../utils/PrivateRoute";
 import Student from "../pages/Student";
+import StudentDetails from "../components/StudentDetail";
 
 export default function AdminRoutes() {
   usePageTracking();
