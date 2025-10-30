@@ -34,8 +34,7 @@ const StudentForm = () => {
   const fetchStudents = async () => {
     try {
       const res = await axios.get(`${API_URL}/api/students`);
-      const studentList = res.data.data || res.data;
-      setStudents(studentList);
+      setStudents(res.data.data || res.data);
     } catch (error) {
       console.error("Error fetching students:", error);
     }
@@ -49,7 +48,6 @@ const StudentForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // if course changes, adjust software fields accordingly
     if (name === "course") {
       const limit = courseSoftwareLimit[value];
       setFormData((prev) => ({
@@ -88,6 +86,7 @@ const StudentForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Client-side validation
     if (!formData.name || !formData.mobile || !formData.course) {
       toast.error("Please fill all required fields");
       return;
@@ -95,10 +94,19 @@ const StudentForm = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post(`${API_URL}/api/students`, formData);
-      toast.success("Student added successfully!");
 
+      console.log("Sending data:", formData); // 🔍 DEBUG LINE
+
+      const res = await axios.post(`${API_URL}/api/students`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      toast.success(res.data.message || "Student added successfully!");
       await fetchStudents();
+
+      // Reset form
       setFormData({
         name: "",
         fatherName: "",
@@ -113,10 +121,12 @@ const StudentForm = () => {
         joinDate: new Date().toISOString().split("T")[0],
       });
     } catch (err) {
+      console.error("Form submit error:", err);
+
       if (err.response?.data?.errors) {
-        err.response.data.errors.forEach((error) => toast.error(error.msg));
+        err.response.data.errors.forEach((msg) => toast.error(msg));
       } else {
-        toast.error("Server Error: Failed to add student");
+        toast.error(err.response?.data?.message || "Failed to add student");
       }
     } finally {
       setLoading(false);
@@ -127,8 +137,11 @@ const StudentForm = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-semibold mb-4">Add New Student</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow">
-        {/* Basic info */}
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 bg-white p-6 rounded shadow"
+      >
+        {/* Basic Info */}
         <input
           type="text"
           name="name"
@@ -138,6 +151,7 @@ const StudentForm = () => {
           className="border p-2 w-full rounded"
           required
         />
+
         <input
           type="text"
           name="fatherName"
@@ -146,6 +160,7 @@ const StudentForm = () => {
           onChange={handleChange}
           className="border p-2 w-full rounded"
         />
+
         <input
           type="email"
           name="email"
@@ -154,6 +169,7 @@ const StudentForm = () => {
           onChange={handleChange}
           className="border p-2 w-full rounded"
         />
+
         <input
           type="number"
           name="mobile"
@@ -163,6 +179,7 @@ const StudentForm = () => {
           className="border p-2 w-full rounded"
           required
         />
+
         <input
           type="text"
           name="address"
@@ -182,6 +199,7 @@ const StudentForm = () => {
           <option value="">Select Gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
+          <option value="Other">Other</option>
         </select>
 
         {/* Course */}
@@ -193,11 +211,11 @@ const StudentForm = () => {
           required
         >
           <option value="">Select Course</option>
-          <option value="Certificate Course">Certificate Course</option>
-          <option value="Diploma Course">Diploma Course</option>
-          <option value="Professional Course">Professional Course</option>
-          <option value="Master Diploma">Master Diploma</option>
-          <option value="CS/IT Course">CS/IT Course</option>
+          {Object.keys(courseSoftwareLimit).map((course) => (
+            <option key={course} value={course}>
+              {course}
+            </option>
+          ))}
         </select>
 
         {/* Software Fields */}
@@ -219,7 +237,8 @@ const StudentForm = () => {
           onClick={handleAddSoftware}
           className="text-blue-600 font-semibold"
         >
-          + Add More {formData.course === "CS/IT Course" ? "Language" : "Software"}
+          + Add More{" "}
+          {formData.course === "CS/IT Course" ? "Language" : "Software"}
         </button>
 
         {/* Fees */}
@@ -231,6 +250,7 @@ const StudentForm = () => {
           onChange={handleChange}
           className="border p-2 w-full rounded"
         />
+
         <input
           type="number"
           name="feeReceived"
