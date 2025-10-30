@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { generateStudentId } from "../utils/GenrateStudentId"; // check correct spelling/path
+import { generateStudentId } from "../utils/GenrateStudentId";
 
 const courseSoftwareLimit = {
   "Certificate Course": 1,
@@ -30,20 +30,25 @@ export default function StudentForm() {
   const [existingStudents, setExistingStudents] = useState([]);
   const API_URL = "https://caddbackend-hpn1.vercel.app";
 
-  // Fetch all existing students once
-  // useEffect(() => {
-  //   axios
-  //     .get(`${API_URL}/api/students`)
-  //     .then((res) => { 
-  //       setExistingStudents(res.data);
-  //     })
-  //     .catch(() => toast.error("Failed to load existing students"));
-  // }, []);
-
-  //  Generate new UUID after fetching existing students
+  // ✅ Fetch existing students on mount
   useEffect(() => {
-    const newId = generateStudentId(existingStudents || []);
-    setFormData((prev) => ({ ...prev, UUID: newId }));
+    const fetchStudents = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/api/students`);
+        setExistingStudents(res.data);
+      } catch (error) {
+        console.error("Failed to fetch students:", error);
+      }
+    };
+    fetchStudents();
+  }, []);
+
+  // ✅ Generate next UUID when students are fetched
+  useEffect(() => {
+    if (existingStudents.length >= 0) {
+      const newId = generateStudentId(existingStudents || []);
+      setFormData((prev) => ({ ...prev, UUID: newId }));
+    }
   }, [existingStudents]);
 
   // Input change handler
@@ -55,7 +60,7 @@ export default function StudentForm() {
     }));
   };
 
-  //  Course selection logic
+  // Course change
   const handleCourseChange = (e) => {
     const course = e.target.value;
     const limit = courseSoftwareLimit[course];
@@ -66,7 +71,7 @@ export default function StudentForm() {
     }));
   };
 
-  // Update software fields
+  // Update software field
   const updateSoftware = (index, value) => {
     setFormData((prev) => {
       const updated = [...prev.softwares];
@@ -75,7 +80,7 @@ export default function StudentForm() {
     });
   };
 
-  //  Add/remove software fields (for CS/IT Course)
+  // Add/remove software for CS/IT Course
   const addSoftwareField = () =>
     setFormData((prev) => ({ ...prev, softwares: [...prev.softwares, ""] }));
 
@@ -85,7 +90,7 @@ export default function StudentForm() {
       softwares: prev.softwares.filter((_, i) => i !== index),
     }));
 
-  //  Submit form
+  // ✅ Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -93,8 +98,14 @@ export default function StudentForm() {
       await axios.post(`${API_URL}/api/students`, formData);
       toast.success("Student added successfully!");
 
-      // Reset form after submission
-      const newId = generateStudentId([...existingStudents, formData]);
+      // Update local list for next UUID
+      const updatedStudents = [...existingStudents, formData];
+      setExistingStudents(updatedStudents);
+
+      // Generate new UUID after adding student
+      const newId = generateStudentId(updatedStudents);
+
+      // Reset form
       setFormData({
         name: "",
         fatherName: "",
@@ -106,7 +117,7 @@ export default function StudentForm() {
         softwares: [""],
         totalFee: "",
         feeReceived: "",
-        UUID: newId, // generate next one
+        UUID: newId,
       });
     } catch (err) {
       toast.error(err.response?.data?.message || "Error saving student");
